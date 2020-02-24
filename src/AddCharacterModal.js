@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Button, Modal } from 'semantic-ui-react';
+import { Form, Modal } from 'semantic-ui-react';
 
 const genderOptions = [
   { key: 'any', text: '', value: '' },
@@ -15,11 +15,12 @@ const statusOptions = [
   { key: 'u', text: 'Unknown', value: 'Unknown' },
 ];
 
-function AddCharacterModal() {
+function AddCharacterModal({ modalOpen, setModalOpen }) {
   const [formData, setFormData] = useState({ name: '', gender: '', status: '', image: '' });
 
   const handleAddCharacter = () => {
     console.log('TCL: handleAddCharacter -> handleAddCharacter', formData);
+    // setModalOpen(false);
   }
 
   const onChange = (e, { name, value }) => {
@@ -28,16 +29,8 @@ function AddCharacterModal() {
 
   return (
     <Modal
+      open={modalOpen}
       centered={false}
-      trigger={
-        <Button
-          type="button"
-          className="addCharacterButton"
-          color="blue"
-        >
-          Add Character
-        </Button>
-      }
     >
       <Modal.Header>Add new character</Modal.Header>
       <Modal.Content>
@@ -84,6 +77,13 @@ function AddCharacterModal() {
                 content='Add'
                 style={{ marginTop: "24px" }}
                 onClick={handleAddCharacter}
+              />
+              <Form.Button
+                color="red"
+                type="button"
+                content='Cancel'
+                style={{ marginTop: "24px" }}
+                onClick={() => setModalOpen(false)}
               />
             </Form.Group>
           </Form>

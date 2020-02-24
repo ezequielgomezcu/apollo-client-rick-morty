@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { gql } from "apollo-boost";
 import { useLazyQuery } from "@apollo/react-hooks";
-import { Container, Grid, Card, Form, Image, Icon, Loader, Divider } from 'semantic-ui-react';
+import { Container, Grid, Card, Form, Button, Image, Icon, Loader, Divider } from 'semantic-ui-react';
 
 import AddCharacterModal from './AddCharacterModal';
 
@@ -42,6 +42,7 @@ const GET_CHARACTERS = gql`
 `;
 
 function App() {
+  const [modalOpen, setModalOpen] = useState(false);
   const [formData, setFormData] = useState({ name: '', gender: '', status: '' });
   const [getCharacters, { loading, data }] = useLazyQuery(GET_CHARACTERS);
 
@@ -98,7 +99,14 @@ function App() {
             content='Search'
             style={{ marginTop: "24px" }}
           />
-          <AddCharacterModal />
+          <Button
+            type="button"
+            className="addCharacterButton"
+            color="blue"
+            onClick={() => setModalOpen(true)}
+          >
+            Add Character
+          </Button>
         </Form.Group>
       </Form>
       <Divider />
@@ -127,6 +135,7 @@ function App() {
             </Grid.Row>
         }
       </Grid>
+      <AddCharacterModal modalOpen={modalOpen} setModalOpen={setModalOpen} />
     </Container>
   );
 }
