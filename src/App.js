@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { gql } from "apollo-boost";
 import { useLazyQuery } from "@apollo/react-hooks";
-import { Container, Grid, Card, Form, Image, Icon, Divider } from 'semantic-ui-react';
+import { Container, Grid, Card, Form, Image, Icon, Loader, Divider } from 'semantic-ui-react';
 
 import './App.css';
 
@@ -103,25 +103,27 @@ function App() {
       <Divider />
       <Grid columns={5}>
         {
-          !loading && data && <Grid.Row>
-            {data.characters && (
-              data.characters.map(character => <Grid.Column key={character.name} className="card-result">
-                <Card>
-                  <Image src={character.image} />
-                  <Card.Content>
-                    <Card.Header>
-                      {character.name}
-                      <Icon color='grey' name={genderIconName[character.gender]} />
-                    </Card.Header>
-                    <Card.Meta>
-                      <span>{character.status}</span>
-                    </Card.Meta>
-                  </Card.Content>
-                </Card>
-              </Grid.Column>
-              ))
-            }
-          </Grid.Row>
+          loading
+            ? <Loader active inline='centered' />
+            : data && <Grid.Row>
+              {data.characters && (
+                data.characters.map(character => <Grid.Column key={character.name} className="card-result">
+                  <Card>
+                    <Image src={character.image} />
+                    <Card.Content>
+                      <Card.Header>
+                        {character.name}
+                        <Icon color='grey' name={genderIconName[character.gender]} />
+                      </Card.Header>
+                      <Card.Meta>
+                        <span>{character.status}</span>
+                      </Card.Meta>
+                    </Card.Content>
+                  </Card>
+                </Grid.Column>
+                ))
+              }
+            </Grid.Row>
         }
       </Grid>
     </Container>

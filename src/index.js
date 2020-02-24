@@ -10,6 +10,7 @@ import App from './App';
 
 const client = new ApolloClient({
   uri: 'http://localhost:5000/',
+  connectToDevTools: true,
 });
 
 ReactDOM.render(
