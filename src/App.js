@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { gql } from "apollo-boost";
-import { useQuery } from "@apollo/react-hooks";
+import { useLazyQuery } from "@apollo/react-hooks";
 import { Container, Grid, Card, Form, Image, Divider } from 'semantic-ui-react';
 
 import './App.css';
@@ -33,7 +33,7 @@ const GET_CHARACTERS = gql`
 
 function App() {
   const [formData, setFormData] = useState({ name: '', gender: '', status: '' });
-  const { loading, data } = useQuery(GET_CHARACTERS);
+  const [getCharacters, { loading, data }] = useLazyQuery(GET_CHARACTERS);
 
   const onChange = (e, { name, value }) => {
     setFormData({ ...formData, [name]: value });
@@ -41,6 +41,7 @@ function App() {
 
   const handleSearch = (e, v) => {
     setFormData({ name: '', gender: '', status: '' });
+    getCharacters();
   }
 
   return (
