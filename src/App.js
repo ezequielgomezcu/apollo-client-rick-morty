@@ -3,17 +3,17 @@ import { gql } from "apollo-boost";
 import { useLazyQuery } from "@apollo/react-hooks";
 import { Container, Grid, Card, Form, Image, Icon, Loader, Divider } from 'semantic-ui-react';
 
+import AddCharacterModal from './AddCharacterModal';
+
 import './App.css';
 
 const genderOptions = [
-  { key: 'any', text: '', value: '' },
   { key: 'm', text: 'Male', value: 'male' },
   { key: 'f', text: 'Female', value: 'female' },
   { key: 'o', text: 'Other', value: 'other' },
 ];
 
 const statusOptions = [
-  { key: 'any', text: '', value: '' },
   { key: 'a', text: 'Alive', value: 'Alive' },
   { key: 'd', text: 'Dead', value: 'Dead' },
   { key: 'u', text: 'Unknown', value: 'Unknown' },
@@ -68,7 +68,7 @@ function App() {
       />
       <Divider />
       <Form onSubmit={handleSearch}>
-        <Form.Group >
+        <Form.Group>
           <Form.Input
             name="name"
             value={formData.name}
@@ -98,6 +98,7 @@ function App() {
             content='Search'
             style={{ marginTop: "24px" }}
           />
+          <AddCharacterModal />
         </Form.Group>
       </Form>
       <Divider />
