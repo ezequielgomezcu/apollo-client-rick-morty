@@ -20,13 +20,17 @@ const statusOptions = [
 ];
 
 const GET_CHARACTERS = gql`
-  {
-    characters(name: "Rick", gender: "", status: "") {
+  query GetCharacters(
+      $name: String!,
+      $status: String!,
+      $gender: String!
+    ){
+    characters(name: $name, status: $status, gender: $gender) {
       id
       name
-      gender
       status
       image
+      gender
     }
   }
 `;
@@ -40,8 +44,13 @@ function App() {
   };
 
   const handleSearch = (e, v) => {
-    setFormData({ name: '', gender: '', status: '' });
-    getCharacters();
+    getCharacters({
+      variables: {
+        name: formData.name,
+        gender: formData.gender,
+        status: formData.status,
+      }
+    });
   }
 
   return (
