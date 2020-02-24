@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { gql } from "apollo-boost";
 import { useLazyQuery } from "@apollo/react-hooks";
-import { Container, Grid, Card, Form, Image, Divider } from 'semantic-ui-react';
+import { Container, Grid, Card, Form, Image, Icon, Divider } from 'semantic-ui-react';
 
 import './App.css';
 
@@ -18,6 +18,12 @@ const statusOptions = [
   { key: 'd', text: 'Dead', value: 'Dead' },
   { key: 'u', text: 'Unknown', value: 'Unknown' },
 ];
+
+const genderIconName = {
+  male: 'mars',
+  female: 'venus',
+  unknown: 'question',
+};
 
 const GET_CHARACTERS = gql`
   query GetCharacters(
@@ -99,13 +105,16 @@ function App() {
         {
           !loading && data && <Grid.Row>
             {data.characters && (
-              data.characters.map(item => <Grid.Column key={item.name} className="card-result">
+              data.characters.map(character => <Grid.Column key={character.name} className="card-result">
                 <Card>
-                  <Image src={item.image} />
+                  <Image src={character.image} />
                   <Card.Content>
-                    <Card.Header>{item.name} ({item.gender})</Card.Header>
+                    <Card.Header>
+                      {character.name}
+                      <Icon color='grey' name={genderIconName[character.gender]} />
+                    </Card.Header>
                     <Card.Meta>
-                      <span>{item.status}</span>
+                      <span>{character.status}</span>
                     </Card.Meta>
                   </Card.Content>
                 </Card>
