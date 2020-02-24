@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { Container, Form, Image, Divider } from 'semantic-ui-react';
+import { gql } from "apollo-boost";
+import { useQuery } from "@apollo/react-hooks";
+import { Container, Grid, Card, Form, Image, Divider } from 'semantic-ui-react';
 
 import './App.css';
 
@@ -17,8 +19,22 @@ const statusOptions = [
   { key: 'u', text: 'Unknown', value: 'Unknown' },
 ];
 
+const GET_CHARACTERS = gql`
+  {
+    characters(name: "Rick", gender: "", status: "") {
+      id
+      name
+      gender
+      status
+      image
+    }
+  }
+`;
+
 function App() {
   const [formData, setFormData] = useState({ name: '', gender: '', status: '' });
+  const { loading, data } = useQuery(GET_CHARACTERS);
+
   const onChange = (e, { name, value }) => {
     setFormData({ ...formData, [name]: value });
   };
@@ -69,6 +85,26 @@ function App() {
         </Form.Group>
       </Form>
       <Divider />
+      <Grid columns={5}>
+        {
+          !loading && data && <Grid.Row>
+            {data.characters && (
+              data.characters.map(item => <Grid.Column key={item.name} className="card-result">
+                <Card>
+                  <Image src={item.image} />
+                  <Card.Content>
+                    <Card.Header>{item.name} ({item.gender})</Card.Header>
+                    <Card.Meta>
+                      <span>{item.status}</span>
+                    </Card.Meta>
+                  </Card.Content>
+                </Card>
+              </Grid.Column>
+              ))
+            }
+          </Grid.Row>
+        }
+      </Grid>
     </Container>
   );
 }
