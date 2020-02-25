@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { gql } from "apollo-boost";
 import { useLazyQuery } from "@apollo/react-hooks";
 import { Container, Grid, Card, Form, Button, Image, Icon, Loader, Divider } from 'semantic-ui-react';
+
+import { GET_CHARACTERS } from './QueriesAndMutations'
 
 import AddCharacterModal from './AddCharacterModal';
 
@@ -24,22 +25,6 @@ const genderIconName = {
   female: 'venus',
   unknown: 'question',
 };
-
-const GET_CHARACTERS = gql`
-  query GetCharacters(
-      $name: String!,
-      $status: String!,
-      $gender: String!
-    ){
-    characters(name: $name, status: $status, gender: $gender) {
-      id
-      name
-      status
-      image
-      gender
-    }
-  }
-`;
 
 function App() {
   const [modalOpen, setModalOpen] = useState(false);

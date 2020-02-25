@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import { gql } from "apollo-boost";
 import { useMutation } from '@apollo/react-hooks';
 import { Form, Modal } from 'semantic-ui-react';
+
+import {
+  CREATE_CHARACTER,
+} from './QueriesAndMutations'
 
 const genderOptions = [
   { key: 'any', text: '', value: '' },
@@ -17,39 +20,17 @@ const statusOptions = [
   { key: 'u', text: 'Unknown', value: 'unknown' },
 ];
 
-const CREATE_CHARACTER = gql`
-  mutation CreateCharacters(
-      $name: String!,
-      $status: String!,
-      $gender: String!,
-      $image: String!
-    ){
-      createCharacter(
-        name: $name,
-        status: $status,
-        gender: $gender,
-        image: $image
-      ) {
-        id
-        name
-        status
-        image
-        gender
-      }
-    }
-`;
-
 function AddCharacterModal({ modalOpen, setModalOpen }) {
   const [formData, setFormData] = useState({ name: '', gender: '', status: '', image: '' });
   const [createCharacter, { loading }] = useMutation(CREATE_CHARACTER);
 
-
   const handleAddCharacter = () => {
     createCharacter({
+      notifyOnNetworkStatusChange: true,
       variables: { ...formData },
-      onCompleted: () => setModalOpen(false),
-      onError: (e) => console.error(e)
     });
+
+    setModalOpen(false);
   }
 
   const onChange = (e, { name, value }) => {
