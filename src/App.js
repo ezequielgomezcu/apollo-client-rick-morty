@@ -10,13 +10,13 @@ import './App.css';
 const genderOptions = [
   { key: 'm', text: 'Male', value: 'male' },
   { key: 'f', text: 'Female', value: 'female' },
-  { key: 'o', text: 'Other', value: 'other' },
+  { key: 'o', text: 'Unknown', value: 'unknown' },
 ];
 
 const statusOptions = [
   { key: 'a', text: 'Alive', value: 'Alive' },
   { key: 'd', text: 'Dead', value: 'Dead' },
-  { key: 'u', text: 'Unknown', value: 'Unknown' },
+  { key: 'u', text: 'Unknown', value: 'unknown' },
 ];
 
 const genderIconName = {

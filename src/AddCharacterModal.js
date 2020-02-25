@@ -1,26 +1,55 @@
 import React, { useState } from 'react';
+import { gql } from "apollo-boost";
+import { useMutation } from '@apollo/react-hooks';
 import { Form, Modal } from 'semantic-ui-react';
 
 const genderOptions = [
   { key: 'any', text: '', value: '' },
   { key: 'm', text: 'Male', value: 'male' },
   { key: 'f', text: 'Female', value: 'female' },
-  { key: 'o', text: 'Other', value: 'other' },
+  { key: 'o', text: 'Unknown', value: 'unknown' },
 ];
 
 const statusOptions = [
   { key: 'any', text: '', value: '' },
   { key: 'a', text: 'Alive', value: 'Alive' },
   { key: 'd', text: 'Dead', value: 'Dead' },
-  { key: 'u', text: 'Unknown', value: 'Unknown' },
+  { key: 'u', text: 'Unknown', value: 'unknown' },
 ];
+
+const CREATE_CHARACTER = gql`
+  mutation CreateCharacters(
+      $name: String!,
+      $status: String!,
+      $gender: String!,
+      $image: String!
+    ){
+      createCharacter(
+        name: $name,
+        status: $status,
+        gender: $gender,
+        image: $image
+      ) {
+        id
+        name
+        status
+        image
+        gender
+      }
+    }
+`;
 
 function AddCharacterModal({ modalOpen, setModalOpen }) {
   const [formData, setFormData] = useState({ name: '', gender: '', status: '', image: '' });
+  const [createCharacter, { loading }] = useMutation(CREATE_CHARACTER);
+
 
   const handleAddCharacter = () => {
-    console.log('TCL: handleAddCharacter -> handleAddCharacter', formData);
-    // setModalOpen(false);
+    createCharacter({
+      variables: { ...formData },
+      onCompleted: () => setModalOpen(false),
+      onError: (e) => console.error(e)
+    });
   }
 
   const onChange = (e, { name, value }) => {
@@ -74,6 +103,8 @@ function AddCharacterModal({ modalOpen, setModalOpen }) {
               <Form.Button
                 positive
                 type="button"
+                loading={loading}
+                disabled={Object.values(formData).some(field => !field) || loading}
                 content='Add'
                 style={{ marginTop: "24px" }}
                 onClick={handleAddCharacter}
@@ -82,6 +113,7 @@ function AddCharacterModal({ modalOpen, setModalOpen }) {
                 color="red"
                 type="button"
                 content='Cancel'
+                disabled={loading}
                 style={{ marginTop: "24px" }}
                 onClick={() => setModalOpen(false)}
               />
