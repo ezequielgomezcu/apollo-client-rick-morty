@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useLazyQuery } from "@apollo/react-hooks";
-import { Container, Grid, Card, Form, Button, Image, Icon, Loader, Divider } from 'semantic-ui-react';
+import { Container, Grid, Card, Form, Button, Image, Icon, Loader, Segment, Header, Divider } from 'semantic-ui-react';
 
 import { GET_CHARACTERS } from './QueriesAndMutations'
 
@@ -9,12 +9,14 @@ import AddCharacterModal from './AddCharacterModal';
 import './App.css';
 
 const genderOptions = [
+  { key: '-', text: '-', value: '' },
   { key: 'm', text: 'Male', value: 'male' },
   { key: 'f', text: 'Female', value: 'female' },
   { key: 'o', text: 'Unknown', value: 'unknown' },
 ];
 
 const statusOptions = [
+  { key: '-', text: '-', value: '' },
   { key: 'a', text: 'Alive', value: 'Alive' },
   { key: 'd', text: 'Dead', value: 'Dead' },
   { key: 'u', text: 'Unknown', value: 'unknown' },
@@ -120,6 +122,19 @@ function App() {
             </Grid.Row>
         }
       </Grid>
+      {
+        data && !data.characters.length && (
+          <Segment placeholder>
+            <Header icon>
+              <Icon name='search' />
+              We don't have any character matching your query.
+            </Header>
+            <Segment.Inline>
+              <Button primary onClick={() => setModalOpen(true)}>Add Character</Button>
+            </Segment.Inline>
+          </Segment>
+        )
+      }
       <AddCharacterModal modalOpen={modalOpen} setModalOpen={setModalOpen} />
     </Container>
   );
