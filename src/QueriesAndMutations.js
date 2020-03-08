@@ -17,23 +17,24 @@ export const GET_CHARACTERS = gql`
 `;
 
 export const CREATE_CHARACTER = gql`
-mutation CreateCharacters(
-    $name: String!,
-    $status: String!,
-    $gender: String!,
-    $image: String!
-  ){
-    createCharacter(
-      name: $name,
-      status: $status,
-      gender: $gender,
-      image: $image
-    ) {
-      id
-      name
-      status
-      image
-      gender
+  mutation CreateCharacters(
+      $name: String!,
+      $status: String!,
+      $gender: String!,
+      $image: String!
+    ){
+      createCharacter(
+        name: $name,
+        status: $status,
+        gender: $gender,
+        image: $image
+      ) {
+        id
+        name
+        status
+        image
+        gender
+      }
     }
-  }
-`;
+  `
+;

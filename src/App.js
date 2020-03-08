@@ -1,6 +1,18 @@
 import React, { useState } from 'react';
 import { useLazyQuery } from "@apollo/react-hooks";
-import { Container, Grid, Card, Form, Button, Image, Icon, Loader, Segment, Header, Divider } from 'semantic-ui-react';
+import {
+  Container,
+  Grid,
+  Card,
+  Form,
+  Button,
+  Image,
+  Icon,
+  Loader,
+  Segment,
+  Header,
+  Divider,
+} from 'semantic-ui-react';
 
 import { GET_CHARACTERS } from './QueriesAndMutations'
 
