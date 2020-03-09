@@ -20,20 +20,6 @@ import AddCharacterModal from './AddCharacterModal';
 
 import './App.css';
 
-const genderOptions = [
-  { key: '-', text: '-', value: '' },
-  { key: 'm', text: 'Male', value: 'male' },
-  { key: 'f', text: 'Female', value: 'female' },
-  { key: 'o', text: 'Unknown', value: 'unknown' },
-];
-
-const statusOptions = [
-  { key: '-', text: '-', value: '' },
-  { key: 'a', text: 'Alive', value: 'Alive' },
-  { key: 'd', text: 'Dead', value: 'Dead' },
-  { key: 'u', text: 'Unknown', value: 'unknown' },
-];
-
 const genderIconName = {
   male: 'mars',
   female: 'venus',
@@ -42,7 +28,7 @@ const genderIconName = {
 
 function App() {
   const [modalOpen, setModalOpen] = useState(false);
-  const [formData, setFormData] = useState({ name: '', gender: '', status: '' });
+  const [formData, setFormData] = useState({ name: '' });
   const [getCharacters, { loading, data }] = useLazyQuery(GET_CHARACTERS);
 
   const onChange = (e, { name, value }) => {
@@ -53,8 +39,6 @@ function App() {
     getCharacters({
       variables: {
         name: formData.name,
-        gender: formData.gender,
-        status: formData.status,
       }
     });
   }
@@ -76,22 +60,6 @@ function App() {
             label='Character name'
             placeholder='Type a character name...'
             icon='search'
-          />
-          <Form.Select
-            name="gender"
-            value={formData.gender}
-            label='Gender'
-            onChange={onChange}
-            options={genderOptions}
-            placeholder='Gender'
-          />
-          <Form.Select
-            name="status"
-            value={formData.status}
-            label='Status'
-            onChange={onChange}
-            options={statusOptions}
-            placeholder='Status'
           />
           <Form.Button
             positive
@@ -125,6 +93,10 @@ function App() {
                       </Card.Header>
                       <Card.Meta>
                         <span>{character.status}</span>
+                      </Card.Meta>
+                      <Card.Meta>
+                        <Icon color="grey" name="globe" />
+                        <span>{character.location && character.location.name}</span>
                       </Card.Meta>
                     </Card.Content>
                   </Card>

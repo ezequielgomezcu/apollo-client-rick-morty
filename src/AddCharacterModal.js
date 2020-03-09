@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { useMutation } from '@apollo/react-hooks';
+import { useQuery, useMutation } from '@apollo/react-hooks';
 import { Form, Modal } from 'semantic-ui-react';
 
 import {
   CREATE_CHARACTER,
+  GET_LOCATIONS,
 } from './QueriesAndMutations'
 
 const genderOptions = [
@@ -13,15 +14,10 @@ const genderOptions = [
   { key: 'o', text: 'Unknown', value: 'unknown' },
 ];
 
-const statusOptions = [
-  { key: 'any', text: '', value: '' },
-  { key: 'a', text: 'Alive', value: 'Alive' },
-  { key: 'd', text: 'Dead', value: 'Dead' },
-  { key: 'u', text: 'Unknown', value: 'unknown' },
-];
-
 function AddCharacterModal({ modalOpen, setModalOpen }) {
-  const [formData, setFormData] = useState({ name: '', gender: '', status: '', image: '' });
+  let locationOptions = [];
+  const [formData, setFormData] = useState({ name: '', gender: 'male', status: 'Alive', image: '', location: null });
+  const { data: locations } = useQuery(GET_LOCATIONS)
   const [createCharacter, { loading }] = useMutation(CREATE_CHARACTER);
 
   const handleAddCharacter = () => {
@@ -36,6 +32,14 @@ function AddCharacterModal({ modalOpen, setModalOpen }) {
   const onChange = (e, { name, value }) => {
     setFormData({ ...formData, [name]: value });
   };
+
+  if (locations) {
+    locationOptions = locations.locations.map(loc => ({
+      key: loc.id,
+      text: loc.name,
+      value: loc.id
+    }))
+  }
 
   return (
     <Modal
@@ -55,20 +59,12 @@ function AddCharacterModal({ modalOpen, setModalOpen }) {
                 placeholder='Type a name'
               />
               <Form.Select
-                name="gender"
-                value={formData.gender}
-                label='Gender'
+                name="location"
+                value={formData.location}
+                label='Location'
                 onChange={onChange}
-                options={genderOptions}
-                placeholder='Select gender'
-              />
-              <Form.Select
-                name="status"
-                value={formData.status}
-                label='Status'
-                onChange={onChange}
-                options={statusOptions}
-                placeholder='Select status'
+                options={locationOptions}
+                placeholder='Select location'
               />
             </Form.Group>
             <Form.Group widths='equal'>
