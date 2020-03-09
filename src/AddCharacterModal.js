@@ -7,13 +7,6 @@ import {
   GET_LOCATIONS,
 } from './QueriesAndMutations'
 
-const genderOptions = [
-  { key: 'any', text: '', value: '' },
-  { key: 'm', text: 'Male', value: 'male' },
-  { key: 'f', text: 'Female', value: 'female' },
-  { key: 'o', text: 'Unknown', value: 'unknown' },
-];
-
 function AddCharacterModal({ modalOpen, setModalOpen }) {
   let locationOptions = [];
   const [formData, setFormData] = useState({ name: '', gender: 'male', status: 'Alive', image: '', location: null });
